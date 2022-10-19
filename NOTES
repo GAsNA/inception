@@ -1,0 +1,109 @@
+https://www.wanadev.fr/23-tuto-docker-comprendre-docker-partie1/
+----------------------------------------------------------------
+
+docker images			=> voir les images existantes
+
+docker search [qqchose]	=> cherche images a recup
+docker pull [qqchose]	=> recupere une image
+
+-------------------------------
+CREER IMAGE
+-------------------------------
+Dockerfile:
+	- distrib:
+			FROM [qqc]
+	- name:
+			MAINTAINER Romane Leseur <rleseur@student.42.fr>
+	- install:
+			RUN apt update && apt upgrade && apt install (-y) nginx
+	- copie configs et scipts vers image:
+			COPY nginx.conf /etc/nginx/nginx.conf
+			COPY // autres scripts
+	- droit sur script:
+			RUN chmod 744 [chemin]
+	- pnt d'entree (1er script qui va se lancer au demarrage du container):
+			ENTRYPOINT [chemin script]
+	- dir pour next container:
+			WORKDIR [chemin]
+
+docker build .							=> va creer l'image ; . est chemin dockerfile
+docker build --tag="myImage[:myTag]"	=> tagger une image
+
+-------------------------------
+CONTAINERS
+-------------------------------
+docker run [distrib]						=> exec container depuis image docker
+docker ps -l								=> infos
+docker ps -a								=> infos sur stoppe et en cours
+
+docker run --tty --interative [nom image]	=> interragir, bash a utiliser
+	-> --tty: ne pas terminer le process
+	-> --interactive: dialoguer avec
+
+docker run debian:7 echo Docker is fun		=> lancer autre commande que /bin/bash
+
+
+
+----------------------------------------------------------------
+docker system prune -a		=> grand nettoyage
+docker kill [tab/name]		=> supp containers (pas cache)
+docker logs [tab/name]		=> logs containers
+
+
+
+----------------------------------------------------------------
+https://openclassrooms.com/fr/courses/2035766-optimisez-votre-deploiement-en-creant-des-conteneurs-avec-docker/6211624-decouvrez-et-installez-docker-compose
+----------------------------------------------------------------
+
+docker-compose pull				=> recup images dans docker-compose.yml
+
+docker-compose up				=> creation de tous les containers
+	-> -d: faire tourner containers en tache de fond
+
+docker-compose ps				=> infos containers
+docker-compose logs -f --tail 5	=> logs containers (5 l.)
+
+docker-compose stop				=> arretez les containers sans supp ressources
+docker-compose down				=> detruit ressources
+
+docker-compose config			=> verif ecriture file docker-compose
+
+-----------------------------
+CREATE DOCKER-COMPOSE.YML
+-----------------------------
+- VERSION:
+	version: '3'
+- DECLARER SERVICES:
+	services:
+		db:
+			images: mysql:5.7
+- DEFINIR VOLUME:
+			volumes:
+				-db_data:/var/lib/mysql
+- POLITIQUE REDEMARRAGE:
+			restart: always
+- VAR ENV:
+			environment:
+				MYSQL_ROOT_PASSWORD: **********
+				MYSQL_DATABASE: **********
+				MYSQL_USER: ***********
+				MYSQL_PASSWORD: *************
+- EX AVEC NEW SERVICE:
+		wordpress:
+			depends_on:								=> creer dependance entre 2 containers
+				- db
+			image: wordpress:latest
+			ports:
+				- "8000:80"
+			restart: always
+			environment:
+				WORDPRESS_DB_HOST: db:3306
+				WORDPRESS_DB_USER: **********
+				WORDPRESS_DB_PASSWORD: *********
+				WORDPRESS_DB_NAME: **********
+	volumes:
+		db_data: {}
+
+DOCKER-COMPOSE -F DOCKER-COMPOSE.YML UP --BUILD
+	=> -f precise .yml
+	=> --build build image before starting container

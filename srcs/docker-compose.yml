@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    ports:
+      - "80:80"
+	  - "443:443"
+    depends_on:
+      - wordpress
+    restart: always
+
+  wordpress:
+    container_name: wordpress
+    image: wordpress:latest
+    ports:
+      - "9000:9000"
+    depends_on:
+      - mariadb
+    restart: always
+
+  mariadb:
+    container_name: mariadb
+    image: mariadb:latest
+    ports:
+      - "3306:3306"
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: "1234"
+      #MARIADB_ROOT_PASSWORD_HASH, MARIADB_ALLOW_EMPTY_ROOT_PASSWORD and MARIADB_RANDOM_ROOT_PASSWORD
