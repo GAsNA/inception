@@ -4,7 +4,7 @@ up:
 	docker-compose -f srcs/docker-compose.yml up --build
 
 clean: stop
-	docker system prune -a
+	docker system prune -a -f
 
 stop:
 	docker-compose -f srcs/docker-compose.yml down
