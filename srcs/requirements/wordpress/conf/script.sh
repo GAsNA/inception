@@ -1,6 +1,7 @@
 #!/bin/bash
 
 echo BEGIN
+cp /etc/wp-config.php .
 wp core download --allow-root
 
 echo PASS
@@ -18,7 +19,7 @@ wp core install --url="rleseur.42.fr" --title="Inception"\
 
 if [[ ! $(wp user get $WP_USER_LOGIN --allow-root) ]]
 then
-	wp user create $WP_USER_LOGIN inception@je.tehais --user_pass=$WP_USER_PASSWORD --allow-root
+	wp user create $WP_USER_LOGIN inception@example.com --user_pass=$WP_USER_PASSWORD --allow-root
 fi
 
 echo GOOD

@@ -21,7 +21,7 @@ services:
     expose:
       - "9000"
     depends_on:
-      - mariadb
+      - mysql
     restart: always
     networks:
       - inception_network
@@ -30,7 +30,7 @@ services:
     volumes:
       - wp-data:/var/www/html
 
-  mariadb:
+  mysql:
     build: ./requirements/mariadb
     expose:
       - "3306"
