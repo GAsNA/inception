@@ -8,6 +8,7 @@ COPY		conf/nginx.conf /etc/nginx/conf.d/rleseur.conf
 RUN			chmod -R 744 /etc/nginx/conf.d/rleseur.conf
 
 RUN			mkdir -p /var/www/html && chmod -R 744 /var/www/html
+RUN			chown -R www-data:www-data /var/www/html
 
 RUN			mkdir -p /etc/nginx/ssl/private && mkdir -p /etc/nginx/ssl/certs
 

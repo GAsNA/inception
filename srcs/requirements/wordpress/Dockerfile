@@ -26,4 +26,6 @@ RUN			curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-c
 			chmod +x wp-cli.phar &&\
 			mv wp-cli.phar /usr/local/bin/wp
 
-CMD			["bash", "etc/script.sh"]
+WORKDIR		/var/www/html
+
+CMD			["bash", "/etc/script.sh"]
