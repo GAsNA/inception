@@ -1,4 +1,4 @@
-version: '3.9'
+version: '3.7'
 
 services:
 
@@ -51,12 +51,12 @@ volumes:
     driver: local
     driver_opts:
       type: volumes
-      device: /home/gasna/data/wordpress
+      device: /home/rleseur/data/wordpress
       o: bind
 
   db-data:
     driver: local
     driver_opts:
       type: volumes
-      device: /home/gasna/data/mysql
+      device: /home/rleseur/data/mysql
       o: bind
